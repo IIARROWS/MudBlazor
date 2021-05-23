@@ -1,0 +1,13 @@
+﻿<MudNumericField @bind-Value="_value"
+                 Label="Input"
+                 Variant="Variant.Filled"/>
+
+@code {
+    private double _value = 2.2;
+
+    public void ChangeValue(double val)
+    {
+        _value = val;
+        StateHasChanged();
+    }
+}

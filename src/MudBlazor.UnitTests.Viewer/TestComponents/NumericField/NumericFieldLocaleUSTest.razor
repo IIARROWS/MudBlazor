@@ -1,0 +1,18 @@
+﻿@using System.Globalization
+
+<MudNumericField @bind-Value="_value"
+                 Label="Input"
+                 Variant="Variant.Filled"
+                 Culture="UserCulture" />
+
+@code {
+    private CultureInfo UserCulture = new CultureInfo("en-US", false);
+
+    private double _value = 2.2;
+
+    public void ChangeValue(double val)
+    {
+        _value = val;
+        StateHasChanged();
+    }
+}
