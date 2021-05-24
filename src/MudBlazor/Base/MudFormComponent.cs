@@ -70,8 +70,11 @@ namespace MudBlazor
             return changed;
         }
 
+        /// <summary>
+        /// The culture for the current form component. It shall not be used for <code>input[type=number]</code> (such as <see cref="MudNumericField{T}"/>) because it's managed by the browser.
+        /// </summary>
         [Parameter]
-        public CultureInfo Culture
+        public virtual CultureInfo Culture
         {
             get => _converter.Culture;
             set => SetCulture(value);

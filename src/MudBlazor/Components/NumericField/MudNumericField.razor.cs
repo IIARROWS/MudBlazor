@@ -109,6 +109,15 @@ namespace MudBlazor
 
         private static Converter<string> s_inputConverter = new DefaultConverter<string> { Culture = CultureInfo.InvariantCulture };
 
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if(firstRender)
+            {
+                _elementReference.IsNumericField = true;
+                StateHasChanged();
+            }
+        }
+
         public override ValueTask FocusAsync()
         {
             return _elementReference.FocusAsync();
@@ -432,5 +441,10 @@ namespace MudBlazor
         /// Hides the spin buttons, the user can still change value with keyboard arrows and manual update.
         /// </summary>
         [Parameter] public bool HideSpinButtons { get; set; }
+
+        /// <summary>
+        /// Not used. MudNumericField doesn't support a culture because the browser manages the locale of input[type=number].
+        /// </summary>
+        [Parameter] public override CultureInfo Culture { get => base.Culture; set {; } }
     }
 }

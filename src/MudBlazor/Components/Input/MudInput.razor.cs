@@ -16,6 +16,8 @@ namespace MudBlazor
 
         protected string InputTypeString => InputType.ToDescriptionString();
 
+        internal bool IsNumericField { get; set; }
+
         protected override bool ShouldRender()
         {
             //when it keeps the focus, it doesn't render to avoid unnecessary trips to the server

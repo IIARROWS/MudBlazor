@@ -106,8 +106,7 @@ namespace MudBlazor
         /// </summary>
         [Parameter] public int Lines { get; set; } = 1;
 
-        [Parameter]
-        public string Text { get; set; }
+        [Parameter] public string Text { get; set; }
 
         protected async Task SetTextAsync(string text, bool updateValue = true)
         {
