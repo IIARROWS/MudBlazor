@@ -212,67 +212,70 @@ window.mudpopoverHelper = {
                 }
 
                 const graceMargin = window.mudpopoverHelper.flipMargin;
+                const spaceToTop = top - appBarOffset;
                 const deltaToLeft = left + offsetX;
                 const deltaToRight = window.innerWidth - left - selfRect.width;
-                const deltaTop = top - selfRect.height - appBarOffset;
-                const spaceToTop = top - appBarOffset;
+                const deltaTop = spaceToTop - selfRect.height;
                 const deltaBottom = window.innerHeight - top - selfRect.height;
-                //console.log('self-width: ' + selfRect.width + ' | self-height: ' + selfRect.height);
-                //console.log('left: ' + deltaToLeft + ' | rigth:' + deltaToRight + ' | top: ' + deltaTop + ' | bottom: ' + deltaBottom + ' | spaceToTop: ' + spaceToTop);
+                //console.log('self-width: ' + selfRect.width + ' | self-height: ' + selfRect.height + ' | graceMargin: ' + graceMargin);
+                //console.log('left: ' + left + ' | top:' + top + ' | appBarOffset: ' + appBarOffset + ' | spaceToTop: ' + spaceToTop);
+                //console.log('deltaLeft: ' + deltaToLeft + ' | deltaRight:' + deltaToRight + ' | deltaTop: ' + deltaTop + ' | deltaBottom: ' + deltaBottom);
+                //console.log(classList.toString().split(' ').filter(i => i.startsWith('mud-popover-')));
 
                 let selector = popoverContentNode.mudPopoverFliped;
 
                 if (!selector) {
                     if (classList.contains('mud-popover-top-left')) {
-                        if (deltaBottom < graceMargin && deltaToRight < graceMargin && spaceToTop >= selfRect.height && deltaToLeft >= selfRect.width) {
+                        if (deltaBottom < graceMargin && deltaToRight < graceMargin && (deltaTop >= selfRect.height || deltaBottom < deltaTop) && (deltaToLeft >= selfRect.width || deltaToRight < deltaToLeft)) {
                             selector = 'top-and-left';
-                        } else if (deltaBottom < graceMargin && spaceToTop >= selfRect.height) {
+                        } else if (deltaBottom < graceMargin && (deltaTop >= selfRect.height || deltaBottom < deltaTop)) {
                             selector = 'top';
-                        } else if (deltaToRight < graceMargin && deltaToLeft >= selfRect.width) {
+                        } else if (deltaToRight < graceMargin && (deltaToLeft >= selfRect.width || deltaToRight < deltaToLeft)) {
                             selector = 'left';
                         }
                     } else if (classList.contains('mud-popover-top-center')) {
-                        if (deltaBottom < graceMargin && spaceToTop >= selfRect.height) {
+                        if (deltaBottom < graceMargin && (deltaTop >= selfRect.height || deltaBottom < deltaTop)) {
                             selector = 'top';
                         }
                     } else if (classList.contains('mud-popover-top-right')) {
-                        if (deltaBottom < graceMargin && deltaToLeft < graceMargin && spaceToTop >= selfRect.height && deltaToRight >= selfRect.width) {
+                        if (deltaBottom < graceMargin && deltaToLeft < graceMargin && (deltaTop >= selfRect.height || deltaBottom < deltaTop) && (deltaToRight >= selfRect.width || deltaToLeft <  deltaToRight)) {
                             selector = 'top-and-right';
-                        } else if (deltaBottom < graceMargin && spaceToTop >= selfRect.height) {
+                        } else if (deltaBottom < graceMargin && (deltaTop >= selfRect.height || deltaBottom < deltaTops)) {
                             selector = 'top';
-                        } else if (deltaToLeft < graceMargin && deltaToRight >= selfRect.width) {
+                        } else if (deltaToLeft < graceMargin && (deltaToRight >= selfRect.width || deltaToLeft < deltaToRight)) {
                             selector = 'right';
                         }
                     }
 
                     else if (classList.contains('mud-popover-center-left')) {
-                        if (deltaToRight < graceMargin && deltaToLeft >= selfRect.width) {
+                        if (deltaToRight < graceMargin && (deltaToLeft >= selfRect.width || deltaToRight < deltaToLeft)) {
                             selector = 'left';
                         }
                     }
                     else if (classList.contains('mud-popover-center-right')) {
-                        if (deltaToLeft < graceMargin && deltaToRight >= selfRect.width) {
+                        if (deltaToLeft < graceMargin && (deltaToRight >= selfRect.width || deltaToLeft < deltaToRight)) {
                             selector = 'right';
                         }
                     }
+
                     else if (classList.contains('mud-popover-bottom-left')) {
-                        if (deltaTop < graceMargin && deltaToRight < graceMargin && deltaBottom >= 0 && deltaToLeft >= selfRect.width) {
+                        if (deltaTop < graceMargin && deltaToRight < graceMargin && (deltaBottom >= selfRect.height || deltaTop < deltaBottom) && (deltaToLeft >= selfRect.width || deltaToRight < deltaToLeft)) {
                             selector = 'bottom-and-left';
-                        } else if (deltaTop < graceMargin && deltaBottom >= 0) {
+                        } else if (deltaTop < graceMargin && (deltaBottom >= selfRect.height || deltaTop < deltaBottom)) {
                             selector = 'bottom';
-                        } else if (deltaToRight < graceMargin && deltaToLeft >= selfRect.width) {
+                        } else if (deltaToRight < graceMargin && (deltaToLeft >= selfRect.width || deltaToRight < deltaToLeft)) {
                             selector = 'left';
                         }
                     } else if (classList.contains('mud-popover-bottom-center')) {
-                        if (deltaTop < graceMargin && deltaBottom >= 0) {
+                        if (deltaTop < graceMargin && (deltaBottom >= selfRect.height || deltaTop < deltaBottom)) {
                             selector = 'bottom';
                         }
                     } else if (classList.contains('mud-popover-bottom-right')) {
-                        if (deltaTop < graceMargin && deltaToLeft < graceMargin && deltaBottom >= 0 && deltaToRight >= selfRect.width) {
+                        if (deltaTop < graceMargin && deltaToLeft < graceMargin && (deltaBottom >= selfRect.height || deltaTop < deltaBottom) && (deltaToRight >= selfRect.width || deltaToLeft <  deltaToRight)) {
                             selector = 'bottom-and-right';
-                        } else if (deltaTop < graceMargin && deltaBottom >= 0) {
+                        } else if (deltaTop < graceMargin && (deltaBottom >= selfRect.height || deltaTop < deltaBottom)) {
                             selector = 'bottom';
-                        } else if (deltaToLeft < graceMargin && deltaToRight >= selfRect.width) {
+                        } else if (deltaToLeft < graceMargin && (deltaToRight >= selfRect.width || deltaToLeft < deltaToRight)) {
                             selector = 'right';
                         }
                     }
@@ -287,38 +290,39 @@ window.mudpopoverHelper = {
                     popoverContentNode.setAttribute('data-mudpopover-flip', 'flipped');
                 }
                 else {
-                    // did not flip, ensure the left and top are inside bounds
-                    // appbaroffset is another section
-                    if (left + offsetX < 0 && // it's starting left of the screen
-                        Math.abs(left + offsetX) < selfRect.width) { // it's not starting so far left the entire box would be hidden
-                        left = Math.max(0, left + offsetX);
-                        // set offsetX to 0 to avoid double offset
-                        offsetX = 0;
-                    }
-
-                    // will be covered by appbar so adjust zindex with appbar as parent
-                    if (top + offsetY < appBarOffset &&
-                        appBarElements.length > 0) {
-                        this.updatePopoverZIndex(popoverContentNode, appBarElements[0]);
-                        //console.log(`top: ${top} | offsetY: ${offsetY} | total: ${top + offsetY} | appBarOffset: ${appBarOffset}`);
-                    }
-
-                    if (top + offsetY < 0 && // it's starting above the screen
-                        Math.abs(top + offsetY) < selfRect.height) { // it's not starting so far above the entire box would be hidden
-                        top = Math.max(0, top + offsetY);
-                        // set offsetY to 0 to avoid double offset
-                        offsetY = 0;
-                    }
-
-                    // if it contains a mud-list set that mud-list max-height to be the remaining size on screen
-                    const list = popoverContentNode.querySelector('.mud-list');
-                    const listPadding = 24;
-                    const listMaxHeight = (window.innerHeight - top - offsetY);
-                    // is list defined and does the list calculated height exceed the listmaxheight
-                    if (list && list.offsetHeight > listMaxHeight) {
-                        list.style.maxHeight = (listMaxHeight - listPadding) + 'px';
-                    }
                     popoverContentNode.removeAttribute('data-mudpopover-flip');
+                }
+
+                // ensure the left and top are inside bounds
+                // appbaroffset is another section
+                if (left + offsetX < 0 && // it's starting left of the screen
+                    Math.abs(left + offsetX) < selfRect.width) { // it's not starting so far left the entire box would be hidden
+                    left = Math.max(0, left + offsetX);
+                    // set offsetX to 0 to avoid double offset
+                    offsetX = 0;
+                }
+
+                // will be covered by appbar so adjust zindex with appbar as parent
+                if (top + offsetY < appBarOffset &&
+                    appBarElements.length > 0) {
+                    this.updatePopoverZIndex(popoverContentNode, appBarElements[0]);
+                    //console.log(`top: ${top} | offsetY: ${offsetY} | total: ${top + offsetY} | appBarOffset: ${appBarOffset}`);
+                }
+
+                if (top + offsetY < 0 && // it's starting above the screen
+                    Math.abs(top + offsetY) < selfRect.height) { // it's not starting so far above the entire box would be hidden
+                    top = Math.max(0, top + offsetY);
+                    // set offsetY to 0 to avoid double offset
+                    offsetY = 0;
+                }
+
+                // if it contains a mud-list set that mud-list max-height to be the remaining size on screen
+                const list = popoverContentNode.querySelector('.mud-list');
+                const listPadding = 24;
+                const listMaxHeight = (window.innerHeight - top - offsetY);
+                // if list defined and the list calculated height exceeds the listmaxheight
+                if (list && list.offsetHeight > listMaxHeight) {
+                    list.style.maxHeight = (listMaxHeight - listPadding) + 'px';
                 }
 
                 if (classList.contains('mud-popover-overflow-flip-onopen')) {
