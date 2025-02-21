@@ -1,6 +1,7 @@
 ﻿<MudStack Spacing="2">
 	<MudButton OnClick="OnExpandCollapseClick">@(_expanded ? "Collapse" : "Expand")</MudButton>
 	<MudButton OnClick="OnExpandCollapseFor5sClick">@(_expanded ? "Collapse" : "Expand") for 5 s</MudButton>
+	<MudButton OnClick="OnExpandListIn5s">Expand list in 5 s</MudButton>
 	<MudDivider />
 	<MudCollapse Expanded="_expanded">
 		<div style="@($"height: {_height}px")">
@@ -44,18 +45,27 @@
 		<MudMenuItem Label="AAAAAAAAAAAAA Lets" />
 		<MudMenuItem Label="AAAAAAAAAAAAA Limit" />
 		<MudMenuItem Label="AAAAAAAAAAAAA Height" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Long" />
-		<MudMenuItem Label="AAAAAAAAAAAAA List" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Is" />
-		<MudMenuItem Label="AAAAAAAAAAAAA To" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Long" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Lets" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Limit" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Height" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Long" />
-		<MudMenuItem Label="AAAAAAAAAAAAA List" />
-		<MudMenuItem Label="AAAAAAAAAAAAA Is" />
-		<MudMenuItem Label="AAAAAAAAAAAAA To" />
+		@if (_expandList)
+		{
+			<MudMenuItem Label="List" />
+			<MudMenuItem Label="Is" />
+			<MudMenuItem Label="To" />
+			<MudMenuItem Label="Long" />
+			<MudMenuItem Label="Lets" />
+			<MudMenuItem Label="Limit" />
+			<MudMenuItem Label="Height" />
+			<MudMenuItem Label="Long" />
+			<MudMenuItem Label="Lets" />
+			<MudMenuItem Label="Limit" />
+			<MudMenuItem Label="Height" />
+			<MudMenuItem Label="List" />
+			<MudMenuItem Label="Is" />
+			<MudMenuItem Label="To" />
+			<MudMenuItem Label="Long" />
+			<MudMenuItem Label="Lets" />
+			<MudMenuItem Label="Limit" />
+			<MudMenuItem Label="Height" />
+		}
 	</MudMenu>
 	@if (!_hideBottom)
 	{
@@ -75,6 +85,7 @@
 	private Int32 _height { get; set; } = 600;
 	private Int32 _heightBottom { get; set; } = 400;
 	private Boolean _hideBottom { get; set; }
+	private Boolean _expandList { get; set; }
     private Origin _anchor = Origin.BottomLeft;
     private Origin _transform = Origin.TopLeft;
 
@@ -95,5 +106,12 @@
 		_expanded = !cur;
 		await Task.Delay(5000);
 		_expanded = cur;
+	}
+
+	private async Task OnExpandListIn5s()
+	{
+		_expandList = false;
+		await Task.Delay(5000);
+		_expandList = true;
 	}
 }
